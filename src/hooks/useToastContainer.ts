@@ -156,6 +156,7 @@ export function useToastContainer(props: ToastContainerProps) {
       autoClose: options.isLoading
         ? false
         : getAutoCloseDelay(options.autoClose, props.autoClose),
+      order: options.order ?? 0,
       deleteToast() {
         const removed = toToastItem(toastToRender.get(toastId)!, 'removed');
         toastToRender.delete(toastId);

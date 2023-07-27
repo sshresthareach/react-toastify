@@ -247,6 +247,11 @@ export interface ToastOptions<Data = {}> extends CommonOptions {
   isLoading?: boolean;
 
   data?: Data;
+
+  /**
+   * Order of the toast in toast container
+   */
+  order?: number;
 }
 
 export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
@@ -316,6 +321,7 @@ export interface ToastProps extends ToastOptions {
   transition: ToastTransition;
   closeToast: () => void;
   position: ToastPosition;
+  order?: number;
   children?: ToastContent;
   draggablePercent: number;
   draggableDirection?: DraggableDirection;

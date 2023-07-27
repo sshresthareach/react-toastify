@@ -8,7 +8,11 @@ import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
 import { Direction, Default, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks/useToastContainer';
-import { ToastContainerProps, ToastPosition } from '../types';
+import {
+  Toast as ToastType,
+  ToastContainerProps,
+  ToastPosition
+} from '../types';
 
 export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
   (props, ref) => {
@@ -49,30 +53,34 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
             ? { ...style, pointerEvents: 'none' }
             : { ...style };
 
+          console.log('toastList: ', toastList);
           return (
             <div
               className={getClassName(position)}
               style={containerStyle}
               key={`container-${position}`}
             >
-              {toastList.map(({ content, props: toastProps }, i) => {
-                return (
-                  <Toast
-                    {...toastProps}
-                    isIn={isToastActive(toastProps.toastId)}
-                    style={
-                      {
-                        ...toastProps.style,
-                        '--nth': i + 1,
-                        '--len': toastList.length
-                      } as StyleHTMLAttributes<HTMLDivElement>
-                    }
-                    key={`toast-${toastProps.key}`}
-                  >
-                    {content}
-                  </Toast>
-                );
-              })}
+              {toastList
+                .sort(sortToastByOrder)
+                .map(({ content, props: toastProps }, i) => {
+                  console.log('toastProps: ', toastProps);
+                  return (
+                    <Toast
+                      {...toastProps}
+                      isIn={isToastActive(toastProps.toastId)}
+                      style={
+                        {
+                          ...toastProps.style,
+                          '--nth': i + 1,
+                          '--len': toastList.length
+                        } as StyleHTMLAttributes<HTMLDivElement>
+                      }
+                      key={`toast-${toastProps.key}`}
+                    >
+                      {content}
+                    </Toast>
+                  );
+                })}
             </div>
           );
         })}
@@ -80,6 +88,19 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
     );
   }
 );
+
+function sortToastByOrder(a: ToastType, b: ToastType) {
+  // Check if either "order" property is undefined
+  if (a.props.order === undefined && b.props.order === undefined) {
+    return 0;
+  } else if (a.props.order === undefined) {
+    return 1; // "a" has undefined "order", move it to the end
+  } else if (b.props.order === undefined) {
+    return -1; // "b" has undefined "order", move it to the end
+  } else {
+    return a.props.order - b.props.order; // Compare "order" property if both are defined
+  }
+}
 
 ToastContainer.displayName = 'ToastContainer';
 
