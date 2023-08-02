@@ -1,7 +1,7 @@
 /**
  * The playground could use some love 💖. To the brave soul reading this
  * message, any help would be appreciated 🙏
- * 
+ *
  * The code is full of bad assertion 😆
  */
 
@@ -25,11 +25,12 @@ window.toast = toast;
 //   enter: 'animate__animated animate__bounceIn',
 //   exit: 'animate__animated animate__bounceOut'
 // });
-
 class App extends React.Component {
   state = App.getDefaultState();
   toastId: Id;
   resolvePromise = true;
+
+  toastComponent = (<>Hello there</>);
 
   static getDefaultState() {
     return {
@@ -37,9 +38,12 @@ class App extends React.Component {
       transition: 'bounce',
       type: 'default',
       progress: '',
-      disableAutoClose: false,
+      disableAutoClose: true,
       limit: 0,
-      theme: 'light'
+      theme: 'light',
+      order: 0,
+      position: 'bottom-right',
+      toastId: null
     };
   }
 
@@ -53,10 +57,21 @@ class App extends React.Component {
   showToast = () => {
     this.toastId =
       this.state.type === 'default'
-        ? toast('🦄 Wow so easy !', { progress: this.state.progress })
-        : toast[this.state.type]('🚀 Wow so easy !', {
-            progress: this.state.progress
+        ? toast(this.toastComponent, {
+            progress: this.state.progress,
+            order: this.state.order,
+            toastId: this.state.toastId ? this.state.toastId : undefined
+          })
+        : toast[this.state.type](this.toastComponent, {
+            progress: this.state.progress,
+            order: this.state.order,
+            toastId: this.state.toastId ? this.state.toastId : undefined
           });
+  };
+
+  modifyToast = () => {
+    this.toastComponent = <>My other component</>;
+    // toast.update(this.state.toastId, {});
   };
 
   firePromise = () => {
@@ -85,9 +100,9 @@ class App extends React.Component {
 
   isDefaultProps() {
     return (
-      this.state.position === 'top-right' &&
+      this.state.position === 'bottom-right' &&
       this.state.autoClose === 5000 &&
-      !this.state.disableAutoClose &&
+      this.state.disableAutoClose &&
       !this.state.hideProgressBar &&
       !this.state.newestOnTop &&
       !this.state.rtl &&
@@ -168,7 +183,7 @@ class App extends React.Component {
                     type="number"
                     name="autoClose"
                     id="autoClose"
-                    value={(this.state.autoClose as unknown) as string}
+                    value={this.state.autoClose as unknown as string}
                     onChange={this.handleAutoCloseDelay}
                     disabled={this.state.disableAutoClose}
                   />
@@ -224,16 +239,36 @@ class App extends React.Component {
                     onChange={this.handleRadioOrSelect}
                   />
                 </label>
+                <label htmlFor="order">
+                  Order
+                  <input
+                    type="number"
+                    name="order"
+                    id="order"
+                    value={this.state.order}
+                    onChange={this.handleRadioOrSelect}
+                  />
+                </label>
+                <label htmlFor="toastId">
+                  ToastId
+                  <input
+                    type="text"
+                    name="toastId"
+                    id="toastId"
+                    value={this.state.toastId || ''}
+                    onChange={this.handleRadioOrSelect}
+                  />
+                </label>
               </div>
               <ul>{this.renderFlags()}</ul>
             </div>
           </section>
           <section>
             <ContainerCode
-              {...((this.state as unknown) as ContainerCodeProps)}
+              {...(this.state as unknown as ContainerCodeProps)}
               isDefaultProps={this.isDefaultProps() as boolean}
             />
-            <ToastCode {...((this.state as unknown) as ToastCodeProps)} />
+            <ToastCode {...(this.state as unknown as ToastCodeProps)} />
           </section>
           <div className="cta__wrapper">
             <ul className="container__actions">
