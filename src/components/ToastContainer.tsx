@@ -61,7 +61,7 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
               key={`container-${position}`}
             >
               {toastList
-                .sort(sortToastByOrder)
+                .sort((a, b) => sortToastByOrder(a, b, position))
                 .map(({ content, props: toastProps }, i) => {
                   console.log('toastProps: ', toastProps);
                   return (
@@ -89,7 +89,7 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
   }
 );
 
-function sortToastByOrder(a: ToastType, b: ToastType) {
+function sortToastByOrder(a: ToastType, b: ToastType, position: ToastPosition) {
   // Check if either "order" property is undefined
   if (a.props.order === undefined && b.props.order === undefined) {
     return 0;
@@ -98,7 +98,12 @@ function sortToastByOrder(a: ToastType, b: ToastType) {
   } else if (b.props.order === undefined) {
     return -1; // "b" has undefined "order", move it to the end
   } else {
-    return a.props.order - b.props.order; // Compare "order" property if both are defined
+    // For consistency,
+    // If the container position is top the toast with least order will be at top
+    // If the container position is bottom the toast with least order will be at bottom
+    return position.includes('top')
+      ? a.props.order - b.props.order
+      : b.props.order - a.props.order; // Compare "order" property if both are defined
   }
 }
 
