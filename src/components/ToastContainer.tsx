@@ -53,7 +53,6 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
             ? { ...style, pointerEvents: 'none' }
             : { ...style };
 
-          console.log('toastList: ', toastList);
           return (
             <div
               className={getClassName(position)}
@@ -63,7 +62,6 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
               {toastList
                 .sort((a, b) => sortToastByOrder(a, b, position))
                 .map(({ content, props: toastProps }, i) => {
-                  console.log('toastProps: ', toastProps);
                   return (
                     <Toast
                       {...toastProps}
