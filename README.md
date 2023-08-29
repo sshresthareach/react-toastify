@@ -6,9 +6,7 @@
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
 ![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
 
-
-![React toastify](https://user-images.githubusercontent.com/5574267/130804494-a9d2d69c-f170-4576-b2e1-0bb7f13dd92d.gif "React toastify")
-
+![React toastify](https://user-images.githubusercontent.com/5574267/130804494-a9d2d69c-f170-4576-b2e1-0bb7f13dd92d.gif 'React toastify')
 
 🎉 React-Toastify allows you to add notifications to your app with ease. No more nonsense!
 
@@ -28,7 +26,7 @@ $ yarn add react-toastify
 - Can choose swipe direction
 - Super easy to use an animation of your choice. Works well with animate.css for example
 - Can display a react component inside the toast!
-- Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
+- Has `onOpen` and `onClose` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
 - Pause toast when the window loses focus 👁
@@ -42,21 +40,51 @@ $ yarn add react-toastify
 ## The gist
 
 ```jsx
-  import React from 'react';
+import React from 'react';
 
-  import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
-  
-  function App(){
-    const notify = () => toast("Wow so easy!");
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-    return (
-      <div>
-        <button onClick={notify}>Notify!</button>
-        <ToastContainer />
-      </div>
-    );
-  }
+function App() {
+  const notify = () => toast('Wow so easy!');
+
+  return (
+    <div>
+      <button onClick={notify}>Notify!</button>
+      <ToastContainer />
+    </div>
+  );
+}
+```
+
+## Toast Ordering
+
+Toasts can be ordered by using the toast property. The value can be any number. The default value is 0.
+
+```jsx
+// Assuming the Toast Container is at bottom-right
+toast('Hi');
+
+// This toast will appear above the first toast because it's order is higher that default of 0.
+toast('I am first.', {
+  order: 1
+});
+
+// This toast will appear at the top because it's order is higher than all.
+toast('I am the new first.', {
+  order: 2
+});
+
+/*
+ * This toast is created third and it will appear at the bottom of the Toast Container,
+ * because it's value is less than other toasts.
+ */
+toast('I will be at bottom', {
+  order: -1
+});
+
+// This toast will appear above the previous toast but below all other toasts because the default value of toast is 0
+toast('Hello');
 ```
 
 ## Demo
