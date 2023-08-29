@@ -65,12 +65,12 @@ Toasts can be ordered by using the toast property. The value can be any number. 
 // Assuming the Toast Container is at bottom-right
 toast('Hi');
 
-// This toast will appear above the first toast because it's order is higher that default of 0.
+// This toast will appear above the first toast because its order is higher that default of 0.
 toast('I am first.', {
   order: 1
 });
 
-// This toast will appear at the top because it's order is higher than all.
+// This toast will appear at the top because its order is higher than all.
 toast('I am the new first.', {
   order: 2
 });
