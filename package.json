@@ -84,7 +84,7 @@
       "node"
     ]
   },
-  "name": "react-toastify",
+  "name": "@reachmedianetwork/react-toastify",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fkhadra/react-toastify.git"

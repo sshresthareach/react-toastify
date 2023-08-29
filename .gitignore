@@ -11,3 +11,5 @@ esm/
 dist/
 .cache
 /addons
+.yarn/
+react-toastify.tgz
